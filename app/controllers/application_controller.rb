@@ -16,5 +16,14 @@ class ApplicationController < Sinatra::Base
     plant.to_json
   end
 
+  post '/plants' do
+    plant = Plant.new(plant_params)
+    if plant.save
+      plant.to_json
+    else
+      status 422
+      { message: 'Unable to create the plant.' }.to_json
+    end
+  end
   
 end
