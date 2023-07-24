@@ -6,4 +6,3 @@ class Plant < ActiveRecord::Base
     validates :species, presence: true
     validates :image_url, presence: true
 end
-  
