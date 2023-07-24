@@ -6,6 +6,18 @@ class ApplicationController < Sinatra::Base
     { message: "Good luck with your project!" }.to_json
   end
 
+  post '/login' do
+    request_body = JSON.parse(request.body.read)
+    username = request_body["username"]
+    password = request_body["password"]
+
+    if username == "mumbi" && password == "1324"
+      { success: true, message: 'Login successful!' }.to_json
+    else
+      { success: false, message: 'Login failed. Please check your credentials.' }.to_json
+    end
+  end
+
   get '/plants' do
     plants = Plant.includes(:care_tasks).all
     plants.to_json(include: :care_tasks)
