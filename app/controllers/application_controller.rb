@@ -40,4 +40,14 @@ class ApplicationController < Sinatra::Base
     { message: 'Plant deleted successfully.' }.to_json
   end
 
+  get '/care_tasks' do
+    care_tasks = CareTask.all
+    care_tasks.to_json
+  end
+
+  get '/care_tasks/:id' do
+    care_task = CareTask.find(params[:id])
+    care_task.to_json
+  end
+
 end
