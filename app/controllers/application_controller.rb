@@ -59,4 +59,10 @@ class ApplicationController < Sinatra::Base
     end
   end
 
+  delete '/care_tasks/:id' do
+    care_task = CareTask.find(params[:id])
+    care_task.destroy
+    { message: 'Care task has been deleted successfully.' }.to_json
+  end
+
 end
