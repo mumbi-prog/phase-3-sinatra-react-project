@@ -65,4 +65,14 @@ class ApplicationController < Sinatra::Base
     { message: 'Care task has been deleted successfully.' }.to_json
   end
 
+  private
+
+  def plant_params
+    params.require(:plant).permit(:name, :species, :image_url)
+  end
+
+  def care_task_params
+    params.require(:care_task).permit(:name, :description, :due_date, :plant_id)
+  end
+
 end
