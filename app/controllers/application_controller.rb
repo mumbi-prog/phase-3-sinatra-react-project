@@ -50,4 +50,13 @@ class ApplicationController < Sinatra::Base
     care_task.to_json
   end
 
+  post '/care_tasks' do
+    care_task = CareTask.new(care_task_params)
+    if care_task.save
+      care_task.to_json
+    else
+      { message: 'Unable to create the care task.' }.to_json
+    end
+  end
+
 end
