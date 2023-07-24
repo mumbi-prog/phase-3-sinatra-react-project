@@ -37,8 +37,7 @@ class ApplicationController < Sinatra::Base
   delete '/plants/:id' do
     plant = Plant.find(params[:id])
     plant.destroy
-    status 200
-    { message: 'Plant has been deleted successfully.' }.to_json
+    { message: 'Plant deleted successfully.' }.to_json
   end
 
 end
