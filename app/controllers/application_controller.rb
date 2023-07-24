@@ -7,13 +7,13 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/plants' do
-    plants = Plant.all
-    plants.to_json
+    plants = Plant.includes(:care_tasks).all
+    plants.to_json(include: :care_tasks)
   end
 
   get '/plants/:id' do
-    plant = Plant.find(params[:id])
-    plant.to_json
+    plant = Plant.includes(:care_tasks).find(params[:id])
+    plant.to_json(include: :care_tasks)
   end
 
   post '/plants' do
@@ -40,14 +40,14 @@ class ApplicationController < Sinatra::Base
     { message: 'Plant deleted successfully.' }.to_json
   end
 
-  get '/plants' do
-    plants = Plant.includes(:care_tasks).all
-    plants.to_json(include: :care_tasks)
+  get '/care_tasks' do
+    care_tasks = CareTask.all
+    care_tasks.to_json
   end
 
-  get '/plants/:id' do
-    plant = Plant.includes(:care_tasks).find(params[:id])
-    plant.to_json(include: :care_tasks)
+  get '/care_tasks/:id' do
+    care_task = CareTask.find(params[:id])
+    care_task.to_json
   end
 
   post '/care_tasks' do
