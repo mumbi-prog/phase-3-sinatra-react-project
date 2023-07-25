@@ -14,14 +14,14 @@ class ApplicationController < Sinatra::Base
     if username == "mumbi" && password == "1324"
       { success: true, message: 'Login successful!' }.to_json
     else
-      { success: false, message: 'Login failed. Please check your credentials.' }.to_json
+      { success: false, message: 'Login failed!!' }.to_json
     end
   end
 
   get '/plants' do
-    plants = Plant.includes(:care_tasks).order(created_at: :desc).all
+    plants = Plant.all.order(id: :desc).includes(:care_tasks)
     plants.to_json(include: :care_tasks)
-  end
+  end  
 
   get '/plants/:id' do
     plant = Plant.includes(:care_tasks).find(params[:id])
@@ -29,21 +29,15 @@ class ApplicationController < Sinatra::Base
   end
 
   post '/plants' do
-    plant = Plant.new(plant_params)
-    if plant.save
-      plant.to_json
-    else
-      { message: 'Unable to create the plant.' }.to_json
-    end
+    # binding.pry
+    plant = Plant.create(name: params[:name], species: params[:species], image_url: params[:image_url])
+    plant.to_json
   end
 
   patch '/plants/:id' do
     plant = Plant.find(params[:id])
-    if plant.update(plant_params)
-      plant.to_json
-    else
-      { message: 'Unable to update the plant.' }.to_json
-    end
+    plant.update(name: params[:name], species: params[:species], image_url: params[:image_url])
+    {message: "Updated successfully"}.to_json
   end
 
   delete '/plants/:id' do
@@ -63,12 +57,14 @@ class ApplicationController < Sinatra::Base
   end
 
   post '/care_tasks' do
-    care_task = CareTask.new(care_task_params)
-    if care_task.save
-      care_task.to_json
-    else
-      { message: 'Unable to create the care task.' }.to_json
-    end
+    care_task = CareTask.create(name: params[:name], description: params[:description], due_date: params[:due_date])
+    care_task.to_json
+  end
+
+  patch '/care_tasks/:id' do
+    care_task = CareTask.find(params[:id])
+    care_task.update(name: params[:name], description: params[:description], due_date: params[:due_date])
+    {message: "Updated successfully"}.to_json
   end
 
   delete '/care_tasks/:id' do

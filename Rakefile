@@ -22,3 +22,13 @@ task :console do
   ActiveRecord::Base.logger = Logger.new(STDOUT)
   Pry.start
 end
+
+namespace :db do
+  desc "Remove plants with duplicate species names"
+  task :cleanup_duplicates do
+    Plant.group(:species).having("COUNT(*) > 1").each do |plant|
+      plants_to_delete = Plant.where(species: plant.species).order(:id).drop(1)
+      plants_to_delete.each(&:destroy)
+    end
+  end
+end
