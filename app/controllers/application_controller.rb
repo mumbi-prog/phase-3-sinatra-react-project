@@ -19,7 +19,7 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/plants' do
-    plants = Plant.includes(:care_tasks).all
+    plants = Plant.includes(:care_tasks).order(created_at: :desc).all
     plants.to_json(include: :care_tasks)
   end
 
