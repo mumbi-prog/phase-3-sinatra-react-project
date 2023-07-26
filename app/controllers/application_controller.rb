@@ -57,8 +57,9 @@ class ApplicationController < Sinatra::Base
   end
 
   post '/care_tasks' do
-    care_task = CareTask.create(name: params[:name], description: params[:description], due_date: params[:due_date])
+    care_task = CareTask.create(name: params[:name], description: params[:description], due_date: params[:due_date], plant_id: params[:plant_id])
     care_task.to_json
+    {message: "Added successfully"}.to_json
   end
 
   patch '/care_tasks/:id' do
@@ -70,7 +71,7 @@ class ApplicationController < Sinatra::Base
   delete '/care_tasks/:id' do
     care_task = CareTask.find(params[:id])
     care_task.destroy
-    { message: 'Care task has been deleted successfully.' }.to_json
+    { message: 'Care task deleted successfully.' }.to_json
   end
 
   private
