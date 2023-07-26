@@ -7,16 +7,16 @@ class ApplicationController < Sinatra::Base
   end
 
   post '/login' do
-    request_body = JSON.parse(request.body.read)
-    username = request_body["username"]
-    password = request_body["password"]
-
+    username = params["username"]
+    password = params["password"]
+  
     if username == "mumbi" && password == "1324"
       { success: true, message: 'Login successful!' }.to_json
     else
       { success: false, message: 'Login failed!!' }.to_json
     end
   end
+  
 
   get '/plants' do
     plants = Plant.all.order(id: :desc).includes(:care_tasks)
@@ -72,16 +72,6 @@ class ApplicationController < Sinatra::Base
     care_task = CareTask.find(params[:id])
     care_task.destroy
     { message: 'Care task deleted successfully.' }.to_json
-  end
-
-  private
-
-  def plant_params
-    params.require(:plant).permit(:name, :species, :image_url)
-  end
-
-  def care_task_params
-    params.require(:care_task).permit(:name, :description, :due_date, :plant_id)
   end
 
 end
