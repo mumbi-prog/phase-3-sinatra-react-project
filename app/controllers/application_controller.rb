@@ -1,7 +1,6 @@
 class ApplicationController < Sinatra::Base
   set :default_content_type, 'application/json'
   
-  # Add your routes here
   get "/" do
     { message: "Good luck with your project!" }.to_json
   end
@@ -16,7 +15,6 @@ class ApplicationController < Sinatra::Base
       { success: false, message: 'Login failed!!' }.to_json
     end
   end
-  
 
   get '/plants' do
     plants = Plant.all.order(id: :desc).includes(:care_tasks)
